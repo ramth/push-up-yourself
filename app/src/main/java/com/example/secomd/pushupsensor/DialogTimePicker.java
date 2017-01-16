@@ -21,7 +21,7 @@ import android.widget.TimePicker;
 
 
     public interface OnTimeSetListener{
-        public void onTimeSelected(TimePicker view, int hourOfDay, int minute, int position);
+        public void onTimeSelected(TimePicker view, int hourOfDay, int minute, int position, int flag);
     }
     @Override
     public void onAttach(Activity activity) {
@@ -48,6 +48,7 @@ import android.widget.TimePicker;
 
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         position = getArguments().getInt("position");
-        onTimeSetListener.onTimeSelected(view,hourOfDay,minute,position);
+        int flags = getArguments().getInt("flag");
+        onTimeSetListener.onTimeSelected(view, hourOfDay, minute, position, flags);
     }
 }

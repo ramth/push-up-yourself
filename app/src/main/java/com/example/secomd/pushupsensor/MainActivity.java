@@ -32,17 +32,23 @@ public class MainActivity extends FragmentActivity implements OnItemClick,Dialog
 
     AlarmEntryDbHelper alarmdb;
     SQLiteDatabase dbWrite;
-    SQLiteDatabase dbRead;
     @Override
-    public void onTimeSelected(TimePicker view, int hourOfDay, int minute, int position) {
+    public void onTimeSelected(TimePicker view, int hourOfDay, int minute, int position, int flag) {
         //TODO Replace incorrect new entry functionality to proper change in place
+        //flag - 0 update 1 new
         String time = hourOfDay + ":" + minute;
         ContentValues values = new ContentValues();
         values.put(AlarmEntry.AlarmEntryTable.COLUMN_NAME_PUSHUPCOUNT, 30);
         values.put(AlarmEntry.AlarmEntryTable.COLUMN_NAME_HOUR, hourOfDay);
         values.put(AlarmEntry.AlarmEntryTable.COLUMN_NAME_MINUTE, minute);
 
-        long rowid = dbWrite.insert(AlarmEntry.AlarmEntryTable.TABLE_NAME, null, values);
+        if (flag == 0) {
+            dbWrite.update(AlarmEntry.AlarmEntryTable.TABLE_NAME, values, "_id=" + (position + 1), null);
+        } else if (flag == 1) {
+            long rowid = dbWrite.insert(AlarmEntry.AlarmEntryTable.TABLE_NAME, null, values);
+           
+        }
+
         Cursor cursor = dbWrite.rawQuery("SELECT * FROM Alarms", null);
         adapter.swapCursor(cursor);
 
@@ -53,6 +59,7 @@ public class MainActivity extends FragmentActivity implements OnItemClick,Dialog
         DialogTimePicker newFragment = new DialogTimePicker();
         Bundle bundle = new Bundle();
         bundle.putInt("position",position);
+        bundle.putInt("flag", 0);
         newFragment.setArguments(bundle);
         newFragment.show(getFragmentManager(),"timePicker");
 
@@ -67,18 +74,27 @@ public class MainActivity extends FragmentActivity implements OnItemClick,Dialog
         alarmdb = new AlarmEntryDbHelper(this);
         dbWrite = alarmdb.getWritableDatabase();
         //Default column
+        /*
         ContentValues values = new ContentValues();
         values.put(AlarmEntry.AlarmEntryTable.COLUMN_NAME_PUSHUPCOUNT, 30);
         values.put(AlarmEntry.AlarmEntryTable.COLUMN_NAME_HOUR, 4);
         values.put(AlarmEntry.AlarmEntryTable.COLUMN_NAME_MINUTE, 20);
-
         long rowid = dbWrite.insert(AlarmEntry.AlarmEntryTable.TABLE_NAME, null, values);
+        */
         //SQLiteDatabase dbRead = alarmdb.getReadableDatabase();
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //TODO Implement functionality to add new alarm from button
+                DialogTimePicker newFragment = new DialogTimePicker();
+                Bundle bundle = new Bundle();
+                bundle.putInt("position", 0);
+                bundle.putInt("flag", 1);
+                newFragment.setArguments(bundle);
+                newFragment.show(getFragmentManager(), "timePicker");
+
+
             }
         });
 
