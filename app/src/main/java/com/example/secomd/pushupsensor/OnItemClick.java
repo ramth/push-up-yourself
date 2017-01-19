@@ -5,5 +5,5 @@ package com.example.secomd.pushupsensor;
  */
 
 public interface OnItemClick {
-    public void onItemClicked(int position);
+    public void onItemClicked(int position, int flag);
 }

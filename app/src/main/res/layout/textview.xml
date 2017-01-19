@@ -18,4 +18,20 @@
         android:layout_height="wrap_content"
         android:id="@+id/textClock2" />
 
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+
+        android:layout_marginStart="220dp"
+        android:id="@+id/switch1" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="280dp"
+        android:id="@+id/imbutton" />
+
+
 </RelativeLayout>

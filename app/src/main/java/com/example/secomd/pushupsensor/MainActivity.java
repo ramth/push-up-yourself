@@ -34,8 +34,8 @@ public class MainActivity extends FragmentActivity implements OnItemClick,Dialog
     SQLiteDatabase dbWrite;
     @Override
     public void onTimeSelected(TimePicker view, int hourOfDay, int minute, int position, int flag) {
-        //TODO Replace incorrect new entry functionality to proper change in place
-        //flag - 0 update 1 new
+
+        //flag - 0 update 1 new 2 delete
         String time = hourOfDay + ":" + minute;
         ContentValues values = new ContentValues();
         values.put(AlarmEntry.AlarmEntryTable.COLUMN_NAME_PUSHUPCOUNT, 30);
@@ -44,25 +44,31 @@ public class MainActivity extends FragmentActivity implements OnItemClick,Dialog
 
         if (flag == 0) {
             dbWrite.update(AlarmEntry.AlarmEntryTable.TABLE_NAME, values, "_id=" + (position + 1), null);
+            Log.v("updated", "entry");
         } else if (flag == 1) {
-            long rowid = dbWrite.insert(AlarmEntry.AlarmEntryTable.TABLE_NAME, null, values);
+            dbWrite.insert(AlarmEntry.AlarmEntryTable.TABLE_NAME, null, values);
            
         }
-
         Cursor cursor = dbWrite.rawQuery("SELECT * FROM Alarms", null);
         adapter.swapCursor(cursor);
 
 
     }
     @Override
-    public void onItemClicked(int position) {
-        DialogTimePicker newFragment = new DialogTimePicker();
-        Bundle bundle = new Bundle();
-        bundle.putInt("position",position);
-        bundle.putInt("flag", 0);
-        newFragment.setArguments(bundle);
-        newFragment.show(getFragmentManager(),"timePicker");
-
+    public void onItemClicked(int position, int flag) {
+        if (flag != 2) {
+            DialogTimePicker newFragment = new DialogTimePicker();
+            Bundle bundle = new Bundle();
+            bundle.putInt("position", position);
+            bundle.putInt("flag", flag);
+            newFragment.setArguments(bundle);
+            newFragment.show(getFragmentManager(), "timePicker");
+        } else {
+            dbWrite.delete(AlarmEntry.AlarmEntryTable.TABLE_NAME, "_id=" + (position + 1), null);
+            Cursor cursor = dbWrite.rawQuery("SELECT * FROM Alarms", null);
+            adapter.swapCursor(cursor);
+            Log.v("deleted", "entry");
+        }
     }
 
     @TargetApi(24)

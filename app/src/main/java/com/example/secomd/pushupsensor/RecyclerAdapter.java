@@ -8,6 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextClock;
 import android.widget.TextView;
 
@@ -30,7 +33,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         // each data item is just a string in this case
         public TextView mTextView;
-        public View view;
+
         /*public ViewHolder(TextView v) {
             super(v);
             mTextView = v;
@@ -39,15 +42,28 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
         public ViewHolder(View v) {
             super(v);
-            v.setClickable(true);
-            v.setOnClickListener(this);
-            view = v;
+            TextView tv = (TextView) v.findViewById(R.id.textClock2);
+            ImageButton ib = (ImageButton) v.findViewById(R.id.imbutton);
+            tv.setClickable(true);
+            tv.setOnClickListener(this);
+            ib.setClickable(true);
+            ib.setOnClickListener(this);
+
         }
         @SuppressWarnings("deprecation")
         @Override
         public void onClick(View v) {
             if (onItemClick!=null) {
-                onItemClick.onItemClicked(getPosition());
+                int flag = 1;
+
+                if (v instanceof TextView) {
+                    flag = 0;
+                } else if (v instanceof ImageView) {
+                    flag = 2;
+                }
+
+                onItemClick.onItemClicked(getPosition(), flag);
+
             }
         }
 
