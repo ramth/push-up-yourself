@@ -1,7 +1,9 @@
 package com.example.secomd.pushupsensor;
 
 import android.annotation.TargetApi;
+import android.app.AlarmManager;
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.icu.util.Calendar;
@@ -32,6 +34,7 @@ public class MainActivity extends FragmentActivity implements OnItemClick,Dialog
 
     AlarmEntryDbHelper alarmdb;
     SQLiteDatabase dbWrite;
+    AlarmManager alarmManager;
     @Override
     public void onTimeSelected(TimePicker view, int hourOfDay, int minute, int position, int flag) {
 
@@ -79,6 +82,11 @@ public class MainActivity extends FragmentActivity implements OnItemClick,Dialog
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         alarmdb = new AlarmEntryDbHelper(this);
         dbWrite = alarmdb.getWritableDatabase();
+
+        alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+        Calendar calendar = Calendar.getInstance();
+        AlarmManagerHelper.setAlarm(this, alarmManager, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE) + 1);
+
         //Default column
         /*
         ContentValues values = new ContentValues();
