@@ -23,7 +23,7 @@ public class AlarmManagerHelper {
         //TODO include uniqueid for each alarm
         //TODO setup unit testing for this class
         Intent intent = new Intent(context, CounterView.class);
-        PendingIntent pintent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+        PendingIntent pintent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_ONE_SHOT);
 
         alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis() - 1, pintent);
 

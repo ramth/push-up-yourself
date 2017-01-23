@@ -32,7 +32,7 @@ public class AlarmTest {
 
         AlarmManagerHelper.setAlarm(appContext, alarmManager, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE));
 
-        Activity activity = InstrumentationRegistry.getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 1000);
+        Activity activity = InstrumentationRegistry.getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5000);
 
         assertNotNull((CounterView) activity);
 
