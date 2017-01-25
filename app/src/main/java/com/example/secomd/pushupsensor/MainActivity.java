@@ -23,7 +23,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 /*
-TODO Add a button in viewholder to delete an alarm
+TODO create an intermediate alarmservice or activity before pushup counter view
 
  */
 public class MainActivity extends FragmentActivity implements OnItemClick,DialogTimePicker.OnTimeSetListener{

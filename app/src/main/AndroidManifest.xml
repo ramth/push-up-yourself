@@ -11,11 +11,11 @@
         <activity
             android:name=".CounterView"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".AlarmTimePicker"
             android:label="AlarmTimePicker"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
@@ -30,7 +30,9 @@
         <receiver
             android:name=".AlarmReciever"
             android:enabled="true"
-            android:exported="true"></receiver>
+            android:exported="true" />
+
+        <activity android:name=".AlarmRecieverActivity"></activity>
     </application>
 
 </manifest>
