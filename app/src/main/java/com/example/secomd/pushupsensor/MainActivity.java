@@ -6,7 +6,8 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.icu.util.Calendar;
+
+import java.util.Calendar;
 import android.support.v4.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,7 +24,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 /*
-TODO create an intermediate alarmservice or activity before pushup counter view
+TODO Include selection of days
 
  */
 public class MainActivity extends FragmentActivity implements OnItemClick,DialogTimePicker.OnTimeSetListener{
@@ -74,7 +75,7 @@ public class MainActivity extends FragmentActivity implements OnItemClick,Dialog
         }
     }
 
-    @TargetApi(24)
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

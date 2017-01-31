@@ -26,6 +26,8 @@ import java.util.PriorityQueue;
 
 import static android.hardware.SensorManager.SENSOR_DELAY_NORMAL;
 
+//TODO Exiting this activity without doing desired number of pushups should result in persistent notification and alarm going off
+//TODO Include functionality to remove alarm after doing right number of pushups
 
 public class CounterView extends AppCompatActivity{
 
