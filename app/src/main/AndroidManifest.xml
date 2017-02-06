@@ -27,12 +27,13 @@
             </intent-filter>
         </activity>
 
-        <receiver
-            android:name=".AlarmReciever"
+
+        <activity android:name=".AlarmRecieverActivity" />
+
+        <service
+            android:name="com.example.secomd.pushupsensor.AlarmRingtoneService"
             android:enabled="true"
             android:exported="true" />
-
-        <activity android:name=".AlarmRecieverActivity"></activity>
     </application>
 
 </manifest>

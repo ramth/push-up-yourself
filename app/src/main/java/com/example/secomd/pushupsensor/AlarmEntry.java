@@ -15,7 +15,7 @@ public final class AlarmEntry {
 
         public static final String COLUMN_NAME_HOUR = "Hour";
         public static final String COLUMN_NAME_MINUTE = "Minute";
-
+        public static final String COLUMN_NAME_UUID = "UUID";
         public static final String COLUMN_NAME_PUSHUPCOUNT = "Count";
 
     }

@@ -1,12 +1,17 @@
 package com.example.secomd.pushupsensor;
 
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.os.IBinder;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -27,7 +32,7 @@ import java.util.PriorityQueue;
 import static android.hardware.SensorManager.SENSOR_DELAY_NORMAL;
 
 //TODO Exiting this activity without doing desired number of pushups should result in persistent notification and alarm going off
-//TODO Include functionality to remove alarm after doing right number of pushups
+//TODO Test functionality to remove alarm after doing right number of pushups
 
 public class CounterView extends AppCompatActivity{
 
@@ -42,6 +47,9 @@ public class CounterView extends AppCompatActivity{
     float proxThreshold = (float)(filterWidth*20);
     SensorManager sensorManager;
     CounterCircleView counterCircleView;
+    boolean mBound;
+    AlarmRingtoneService alarmRingtoneService;
+    CounterView counterView = this;
 
     SensorEventListener accelListener = new SensorEventListener() {
 
@@ -92,6 +100,10 @@ public class CounterView extends AppCompatActivity{
             TextView textView = (TextView) findViewById(R.id.textView);
 
             textView.setText(Integer.toString(count));
+
+            if (count == maxcount) {
+                counterView.finish();
+            }
         }
 
         @Override
@@ -100,6 +112,8 @@ public class CounterView extends AppCompatActivity{
         }
 
     };
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -136,6 +150,20 @@ public class CounterView extends AppCompatActivity{
 
         //pBar.setProgress(50);
 
+
+        //alarmRingtoneService.stopRingtone();
+
+        new CountDownTimer(120000, 12000) {
+            public void onTick(long millisUntilFinished) {
+
+            }
+
+            public void onFinish() {
+                Intent intermediateIntent = new Intent(counterView, AlarmRecieverActivity.class);
+                startActivity(intermediateIntent);
+                counterView.finish();
+            }
+        }.start();
     }
 
     @Override
@@ -160,5 +188,13 @@ public class CounterView extends AppCompatActivity{
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onStop() {
+        if (count < maxcount) {
+            Intent alarmRecieverIntent = new Intent(this, AlarmRecieverActivity.class);
+            startActivity(alarmRecieverIntent);
+        }
+        super.onStop();
+    }
 
 }

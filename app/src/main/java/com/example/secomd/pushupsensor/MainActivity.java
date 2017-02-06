@@ -5,9 +5,12 @@ import android.app.AlarmManager;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 
 import java.util.Calendar;
+import java.util.UUID;
+
 import android.support.v4.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,6 +28,10 @@ import android.widget.TimePicker;
 
 /*
 TODO Include selection of days
+TODO make a button
+TODO change floating action button
+TODO change UUID type to time based UUID (variant 2)
+TODO Delete alarms that exist in database but not in AlarmManager
 
  */
 public class MainActivity extends FragmentActivity implements OnItemClick,DialogTimePicker.OnTimeSetListener{
@@ -48,9 +55,21 @@ public class MainActivity extends FragmentActivity implements OnItemClick,Dialog
 
         if (flag == 0) {
             dbWrite.update(AlarmEntry.AlarmEntryTable.TABLE_NAME, values, "_id=" + (position + 1), null);
+            Cursor cursor = dbWrite.rawQuery("SELECT UUID FROM Alarms WHERE _id=?", new String[]{Integer.toString(position + 1)});
+            Log.v("dump", DatabaseUtils.dumpCursorToString(cursor));
+            cursor.moveToFirst();
+            String UUID_str = cursor.getString(cursor.getColumnIndex("UUID"));
+            //String UUID_str = "empty";
+            Log.v("grabbed UUID", UUID_str);
+            AlarmManagerHelper.updateAlarm(this, alarmManager, hourOfDay, minute, UUID_str);
+
             Log.v("updated", "entry");
         } else if (flag == 1) {
+            String UUID_str = UUID.randomUUID().toString();
+            values.put(AlarmEntry.AlarmEntryTable.COLUMN_NAME_UUID, UUID_str);
             dbWrite.insert(AlarmEntry.AlarmEntryTable.TABLE_NAME, null, values);
+            AlarmManagerHelper.setAlarm(this, alarmManager, hourOfDay, minute, UUID_str);
+            Log.v("added", UUID_str);
            
         }
         Cursor cursor = dbWrite.rawQuery("SELECT * FROM Alarms", null);
@@ -68,9 +87,14 @@ public class MainActivity extends FragmentActivity implements OnItemClick,Dialog
             newFragment.setArguments(bundle);
             newFragment.show(getFragmentManager(), "timePicker");
         } else {
+            Cursor cursor = dbWrite.rawQuery("SELECT UUID FROM Alarms WHERE _id=?", new String[]{Integer.toString(position + 1)});
+            cursor.moveToFirst();
+            String UUID_str = cursor.getString(cursor.getColumnIndex("UUID"));
+            Log.v("UUID", UUID_str);
             dbWrite.delete(AlarmEntry.AlarmEntryTable.TABLE_NAME, "_id=" + (position + 1), null);
-            Cursor cursor = dbWrite.rawQuery("SELECT * FROM Alarms", null);
-            adapter.swapCursor(cursor);
+            AlarmManagerHelper.removeAlarm(this, alarmManager, 0, 0, UUID_str);
+            Cursor cursor_swap = dbWrite.rawQuery("SELECT * FROM Alarms", null);
+            adapter.swapCursor(cursor_swap);
             Log.v("deleted", "entry");
         }
     }
@@ -85,8 +109,7 @@ public class MainActivity extends FragmentActivity implements OnItemClick,Dialog
         dbWrite = alarmdb.getWritableDatabase();
 
         alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-        Calendar calendar = Calendar.getInstance();
-        AlarmManagerHelper.setAlarm(this, alarmManager, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE) + 1);
+
 
         //Default column
         /*

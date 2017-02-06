@@ -4,12 +4,15 @@ import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.graphics.drawable.Icon;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.IBinder;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,22 +24,38 @@ import java.lang.annotation.Target;
 
 public class AlarmRecieverActivity extends AppCompatActivity {
 //TODO add some graphics to this activity
-//TODO exiting intermediate activity without calling pushup counter should not terminate alarm
-//TODO move ringtone generation to a service and allow access from AlarmRecieverActivity and CounterView
+//TODO Service doesn't persist after exiting from recent apps list
     Context context;
     AlarmRecieverActivity alarmRecieverActivity = this;
+    AlarmRingtoneService alarmRingtoneService;
     GestureDetector gestureDetector;
+    NotificationManager notificationManager;
     Ringtone r;
+    boolean mBound = false;
 
+    private ServiceConnection mConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName className, IBinder mBinder) {
+            Log.v("in", "onServiceConnected");
+            alarmRingtoneService = ((AlarmRingtoneService.LocalBinder) mBinder).getService();
+            alarmRingtoneService.startRingtone();
+            mBound = true;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName className) {
+            mBound = false;
+        }
+    };
     @Override
     protected void onStop() {
-        makeNotification(this);
+
         super.onStop();
     }
 
     @TargetApi(23)
     private void makeNotification(Context context) {
-        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         Intent intent = new Intent(context, AlarmRecieverActivity.class);
         //does id matter?
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -65,18 +84,17 @@ public class AlarmRecieverActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarm_reciever);
         context = this;
-        Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
-        r = RingtoneManager.getRingtone(this, notification);
-        if (r != null) {
-            Log.v("not", "null");
-        } else {
-            Log.v("is", "null");
-        }
-        r.play();
+
+        Intent serviceIntent = new Intent(getBaseContext(), AlarmRingtoneService.class);
+        startService(serviceIntent);
+        Log.v("bindSuccess", Boolean.toString(bindService(serviceIntent, mConnection, BIND_AUTO_CREATE)));
+        Log.v("mBound", Boolean.toString(mBound));
+        makeNotification(this);
         gestureDetector = new GestureDetector(this, new GestureListener());
 
 
     }
+
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -97,9 +115,10 @@ public class AlarmRecieverActivity extends AppCompatActivity {
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
             Intent intent = new Intent(context, CounterView.class);
             startActivity(intent);
-            r.stop();
+            alarmRingtoneService.stopRingtone();
+            notificationManager.cancel(1);
+            unbindService(mConnection);
             alarmRecieverActivity.finish();
-
             return true;
         }
 

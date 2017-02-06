@@ -19,7 +19,8 @@ public class AlarmEntryDbHelper extends SQLiteOpenHelper {
                     AlarmEntry.AlarmEntryTable._ID + " INTEGER PRIMARY KEY," +
                     AlarmEntry.AlarmEntryTable.COLUMN_NAME_HOUR + " INTEGER," +
                     AlarmEntry.AlarmEntryTable.COLUMN_NAME_MINUTE + " INTEGER," +
-                    AlarmEntry.AlarmEntryTable.COLUMN_NAME_PUSHUPCOUNT + " INTEGER)";
+                    AlarmEntry.AlarmEntryTable.COLUMN_NAME_PUSHUPCOUNT + " INTEGER," +
+                    AlarmEntry.AlarmEntryTable.COLUMN_NAME_UUID + " TEXT)";
 
     private static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + AlarmEntry.AlarmEntryTable.TABLE_NAME;
