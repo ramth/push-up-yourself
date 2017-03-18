@@ -5,7 +5,7 @@ Gets your blood pumping when you wake up and reduces the chance of you going bac
 
 Main Activity displaying Alarms :
 
-![Alt text](/relative/path/to/Screenshot_20170317-182311.png?raw=true "")
+![Alt text](Screenshot_20170317-182311.png?raw=true "")
 
 Push-up counter Activity
 
