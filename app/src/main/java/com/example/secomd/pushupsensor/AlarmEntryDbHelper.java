@@ -8,6 +8,8 @@ import android.util.Log;
 
 /**
  * Created by secomd on 1/5/2017.
+ *
+ * Class that handles creation, update, and passes the current database object upon instantiation
  */
 
 public class AlarmEntryDbHelper extends SQLiteOpenHelper {
@@ -20,7 +22,9 @@ public class AlarmEntryDbHelper extends SQLiteOpenHelper {
                     AlarmEntry.AlarmEntryTable.COLUMN_NAME_HOUR + " INTEGER," +
                     AlarmEntry.AlarmEntryTable.COLUMN_NAME_MINUTE + " INTEGER," +
                     AlarmEntry.AlarmEntryTable.COLUMN_NAME_PUSHUPCOUNT + " INTEGER," +
-                    AlarmEntry.AlarmEntryTable.COLUMN_NAME_UUID + " TEXT)";
+                    AlarmEntry.AlarmEntryTable.COLUMN_NAME_REPEATING + " INTEGER," +
+                    AlarmEntry.AlarmEntryTable.COLUMN_NAME_DAY + " TEXT,"+
+                    AlarmEntry.AlarmEntryTable.COLUMN_NAME_UUID + " INTEGER)";
 
     private static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + AlarmEntry.AlarmEntryTable.TABLE_NAME;

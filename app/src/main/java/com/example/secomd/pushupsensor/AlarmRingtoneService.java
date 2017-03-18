@@ -8,7 +8,9 @@ import android.net.Uri;
 import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
-
+/*
+Service that starts/stops ringtone
+ */
 public class AlarmRingtoneService extends Service {
 
     private Ringtone r;

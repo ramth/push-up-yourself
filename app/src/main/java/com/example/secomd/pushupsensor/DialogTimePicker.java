@@ -12,17 +12,20 @@ import android.text.format.DateFormat;
 import android.widget.TimePicker;
 
 /**
- * Created by secomd on 1/3/2017.
+ * Time Picker Dialog intiated when user clicks add button or a time field on existing alarm in the MainActivity
  */
 
  public class DialogTimePicker extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
 
     OnTimeSetListener onTimeSetListener;
     int position;
-
+    private Alarm alarm;
+    public void bindAlarm(Alarm alarm) {
+        this.alarm = alarm;
+    }
 
     public interface OnTimeSetListener{
-        public void onTimeSelected(TimePicker view, int hourOfDay, int minute, int position, int flag);
+        public void onTimeSelected(TimePicker view, int hourOfDay, int minute, int position, int flag, Alarm alarm);
     }
     @Override
     public void onAttach(Activity activity) {
@@ -50,6 +53,6 @@ import android.widget.TimePicker;
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         position = getArguments().getInt("position");
         int flags = getArguments().getInt("flag");
-        onTimeSetListener.onTimeSelected(view, hourOfDay, minute, position, flags);
+        onTimeSetListener.onTimeSelected(view, hourOfDay, minute, position, flags, alarm);
     }
 }

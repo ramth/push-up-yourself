@@ -3,7 +3,7 @@ package com.example.secomd.pushupsensor;
 import android.provider.BaseColumns;
 
 /**
- * Created by secomd on 1/5/2017.
+ * SQL Database columns and name definitions
  */
 
 public final class AlarmEntry {
@@ -17,6 +17,7 @@ public final class AlarmEntry {
         public static final String COLUMN_NAME_MINUTE = "Minute";
         public static final String COLUMN_NAME_UUID = "UUID";
         public static final String COLUMN_NAME_PUSHUPCOUNT = "Count";
-
+        public static final String COLUMN_NAME_REPEATING = "Repeating";
+        public static final String COLUMN_NAME_DAY = "Day";
     }
 }

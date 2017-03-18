@@ -14,9 +14,10 @@ import android.view.View;
 
 import static android.R.attr.path;
 
-/**
- * TODO: document your custom view class.
+/*
+Custom view to show progress in number of pushups done
  */
+
 public class CounterCircleView extends View {
     private String mExampleString = "wow"; // TODO: use a default from R.string...
     private int mExampleColor = Color.RED; // TODO: use a default from R.color...

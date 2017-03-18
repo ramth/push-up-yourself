@@ -10,8 +10,6 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.graphics.drawable.Icon;
 import android.media.Ringtone;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.IBinder;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -20,13 +18,11 @@ import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 
-import java.lang.annotation.Target;
-
-public class AlarmRecieverActivity extends AppCompatActivity {
+public class AlarmReceiverActivity extends AppCompatActivity {
 //TODO add some graphics to this activity
 //TODO Service doesn't persist after exiting from recent apps list
     Context context;
-    AlarmRecieverActivity alarmRecieverActivity = this;
+    AlarmReceiverActivity alarmReceiverActivity = this;
     AlarmRingtoneService alarmRingtoneService;
     GestureDetector gestureDetector;
     NotificationManager notificationManager;
@@ -49,14 +45,16 @@ public class AlarmRecieverActivity extends AppCompatActivity {
     };
     @Override
     protected void onStop() {
-
+        if (mConnection != null) {
+            unbindService(mConnection);
+        }
         super.onStop();
     }
 
     @TargetApi(23)
     private void makeNotification(Context context) {
         notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        Intent intent = new Intent(context, AlarmRecieverActivity.class);
+        Intent intent = new Intent(context, AlarmReceiverActivity.class);
         //does id matter?
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         Icon icon = Icon.createWithResource(context, R.drawable.ic_access_alarms);
@@ -84,13 +82,15 @@ public class AlarmRecieverActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarm_reciever);
         context = this;
-
+        
         Intent serviceIntent = new Intent(getBaseContext(), AlarmRingtoneService.class);
         startService(serviceIntent);
         Log.v("bindSuccess", Boolean.toString(bindService(serviceIntent, mConnection, BIND_AUTO_CREATE)));
         Log.v("mBound", Boolean.toString(mBound));
         makeNotification(this);
         gestureDetector = new GestureDetector(this, new GestureListener());
+
+
 
 
     }
@@ -117,8 +117,7 @@ public class AlarmRecieverActivity extends AppCompatActivity {
             startActivity(intent);
             alarmRingtoneService.stopRingtone();
             notificationManager.cancel(1);
-            unbindService(mConnection);
-            alarmRecieverActivity.finish();
+            alarmReceiverActivity.finish();
             return true;
         }
 

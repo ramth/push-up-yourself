@@ -13,25 +13,164 @@
 >
 
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textClock2" />
 
+
+
+    <LinearLayout android:layout_height="wrap_content"
+        android:id="@+id/topPane"
+        android:layout_width="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="center_horizontal"
+        android:divider="@drawable/spacer_middle"
+        android:showDividers="middle">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textClock2"
+            android:textSize="18dp"
+            android:textStyle="bold"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text=""/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:background="@drawable/dayselector"
+            android:backgroundTint="@color/colorPrimary"
+            android:paddingTop="5dp"
+            android:paddingLeft="5dp"
+            android:paddingBottom="5dp"
+            android:paddingRight="5dp"
+            android:textAlignment="center"
+            android:text="Repeat"
+            android:id="@+id/RepeatView"
+            />
     <Switch
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-
-        android:layout_marginStart="220dp"
-        android:id="@+id/switch1" />
+        android:id="@+id/switch1"
+        />
 
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="280dp"
         android:id="@+id/imbutton" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="@drawable/spacer_middle"
+        android:showDividers="middle"
+        android:layout_below="@id/topPane"
+        android:paddingTop="20dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/Sunday"
+            android:paddingTop="5dp"
+            android:paddingLeft="5dp"
+            android:paddingBottom="5dp"
+            android:paddingRight="5dp"
+            android:background="@drawable/dayselector"
+            android:textAllCaps="true"
+            android:textAlignment="center"
+            android:layout_weight = "1"
+            android:text="S"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:paddingLeft="5dp"
+            android:paddingBottom="5dp"
+            android:paddingRight="5dp"
+            android:background="@drawable/dayselector"
+            android:textAllCaps="true"
+            android:id="@+id/Monday"
+            android:textAlignment="center"
+            android:layout_weight = "1"
+            android:text="M"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:paddingLeft="5dp"
+            android:paddingBottom="5dp"
+            android:paddingRight="5dp"
+            android:id="@+id/Tuesday"
+            android:background="@drawable/dayselector"
+            android:textAllCaps="true"
+            android:layout_weight = "1"
+            android:textAlignment="center"
+            android:text="T"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/Wednesday"
+            android:paddingTop="5dp"
+            android:paddingLeft="5dp"
+            android:paddingBottom="5dp"
+            android:paddingRight="5dp"
+            android:background="@drawable/dayselector"
+            android:layout_weight = "1"
+            android:textAllCaps="true"
+            android:textAlignment="center"
+            android:text="W"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/Thursday"
+            android:paddingTop="5dp"
+            android:paddingLeft="5dp"
+            android:paddingBottom="5dp"
+            android:paddingRight="5dp"
+            android:background="@drawable/dayselector"
+            android:layout_weight = "1"
+            android:textAllCaps="true"
+            android:textAlignment="center"
+            android:text="R"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/Friday"
+            android:paddingTop="5dp"
+            android:paddingLeft="5dp"
+            android:paddingBottom="5dp"
+            android:paddingRight="5dp"
+            android:background="@drawable/dayselector"
+            android:textAllCaps="true"
+            android:layout_weight = "1"
+            android:textAlignment="center"
+            android:text="F"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/Saturday"
+            android:paddingTop="5dp"
+            android:paddingLeft="5dp"
+            android:paddingBottom="5dp"
+            android:paddingRight="5dp"
+            android:background="@drawable/dayselector"
+            android:textAllCaps="true"
+            android:layout_weight = "1"
+            android:textAlignment="center"
+            android:text="S"
+            />
+
+
+
+
+
+    </LinearLayout>
 
 
 </RelativeLayout>

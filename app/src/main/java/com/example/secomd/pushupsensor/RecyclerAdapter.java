@@ -4,22 +4,25 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextClock;
 import android.widget.TextView;
 
 /**
- * Created by secomd on 12/13/2016.
+ * Class for he List container that displays alarm information in Main Activity
  */
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
-    private String[] mDataset;
+
     private OnItemClick onItemClick;
     protected CursorAdapter cursorAdapter;
     protected final Context mcontext;
@@ -31,39 +34,42 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         this.onItemClick = onItemClick;
     }
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+
         // each data item is just a string in this case
-        public TextView mTextView;
-
-        /*public ViewHolder(TextView v) {
-            super(v);
-            mTextView = v;
-        }*/
-
+        public Alarm alarm;
 
         public ViewHolder(View v) {
             super(v);
-            TextView tv = (TextView) v.findViewById(R.id.textClock2);
-            ImageButton ib = (ImageButton) v.findViewById(R.id.imbutton);
-            tv.setClickable(true);
-            tv.setOnClickListener(this);
-            ib.setClickable(true);
-            ib.setOnClickListener(this);
+            setChildListeners((ViewGroup) v);
+
+
+            //tv.setOnClickListener(this);
+
+            //ib.setOnClickListener(this);
 
         }
         @SuppressWarnings("deprecation")
         @Override
         public void onClick(View v) {
             if (onItemClick!=null) {
-                int flag = 1;
 
-                if (v instanceof TextView) {
-                    flag = 0;
-                } else if (v instanceof ImageView) {
-                    flag = 2;
+                onItemClick.onItemClicked(getPosition(), v, alarm);
+
+            }
+        }
+
+        public void setChildListeners(ViewGroup parentView){
+            View childView;
+            for (int i = 0; i < parentView.getChildCount(); i++) {
+                childView = parentView.getChildAt(i);
+
+                if (childView instanceof LinearLayout || childView instanceof RelativeLayout) {
+                    setChildListeners((ViewGroup) childView);
                 }
-
-                onItemClick.onItemClicked(getPosition(), flag);
-
+                else {
+                    childView.setOnClickListener(this);
+                }
             }
         }
 
@@ -86,6 +92,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         // set the view's size, margins, paddings and layout parameters
         //v.setOnClickListener(onClickListener);
         ViewHolder vh = new ViewHolder(v);
+
         return vh;
     }
 
@@ -98,8 +105,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
         cursorAdapter.getCursor().moveToPosition(position);
         cursorAdapter.bindView(holder.itemView, mcontext, cursorAdapter.getCursor());
-
+        holder.alarm = new Alarm(cursorAdapter.getCursor(), cursorAdapter);
     }
+
+
 
     @SuppressWarnings("SameParameterValue")
     protected void setupCursorAdapter(Cursor cursor, int flags, final int resource, final boolean attachToRoot) {
@@ -117,10 +126,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             @Override
             public void bindView(View view, Context context, Cursor cursor) {
                 // Bind cursor to our ViewHolder
+
                 TextView textClock = (TextView) view.findViewById(R.id.textClock2);
                 String timeStr = String.valueOf(cursor.getInt(cursor.getColumnIndexOrThrow("Hour"))) + ":" +
                         String.valueOf(cursor.getInt(cursor.getColumnIndexOrThrow("Minute")));
                 textClock.setText(timeStr);
+
 
             }
         };

@@ -1,38 +1,31 @@
 package com.example.secomd.pushupsensor;
 
-import android.app.Activity;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.IBinder;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.FrameLayout;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import java.util.Iterator;
 import java.util.PriorityQueue;
 
 import static android.hardware.SensorManager.SENSOR_DELAY_NORMAL;
 
 //TODO Exiting this activity without doing desired number of pushups should result in persistent notification and alarm going off
 //TODO Test functionality to remove alarm after doing right number of pushups
+
+/*
+Activity that senses push-up using the proximity sensor and displays push-up count.
+Accelerometer and Gyroscope can be enabled to make sure the phone is not being moved when push-ups need to be done
+ */
 
 public class CounterView extends AppCompatActivity{
 
@@ -121,14 +114,6 @@ public class CounterView extends AppCompatActivity{
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
        setSupportActionBar(toolbar);
         Log.d("ok", "what");
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
         // Get Sensor references
          sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         Sensor accelSensor =  sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -159,7 +144,7 @@ public class CounterView extends AppCompatActivity{
             }
 
             public void onFinish() {
-                Intent intermediateIntent = new Intent(counterView, AlarmRecieverActivity.class);
+                Intent intermediateIntent = new Intent(counterView, AlarmReceiverActivity.class);
                 startActivity(intermediateIntent);
                 counterView.finish();
             }
@@ -191,7 +176,7 @@ public class CounterView extends AppCompatActivity{
     @Override
     public void onStop() {
         if (count < maxcount) {
-            Intent alarmRecieverIntent = new Intent(this, AlarmRecieverActivity.class);
+            Intent alarmRecieverIntent = new Intent(this, AlarmReceiverActivity.class);
             startActivity(alarmRecieverIntent);
         }
         super.onStop();
